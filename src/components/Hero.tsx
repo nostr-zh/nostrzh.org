@@ -1,0 +1,41 @@
+export function Hero() {
+  return (
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-linear-to-br from-slate-50 via-white to-purple-50 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800" />
+      <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-purple-200/30 dark:bg-purple-900/20 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-indigo-200/30 dark:bg-indigo-900/20 rounded-full blur-3xl translate-y-1/2 -translate-x-1/3" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-purple-100/40 via-transparent to-transparent dark:from-purple-800/10" />
+
+      {/* Grid pattern */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#8882_1px,transparent_1px),linear-gradient(to_bottom,#8882_1px,transparent_1px)] bg-size-[60px_60px] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
+
+      <div className="max-w-4xl mx-auto px-6 text-center relative">
+        <h1 className="text-5xl md:text-7xl font-bold bg-linear-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent mb-6">
+          Nostr 中文社区
+        </h1>
+        <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-8 leading-relaxed">
+          连接每一个自由表达的声音
+          <br />
+          <span className="text-lg text-slate-500 dark:text-slate-400">
+            去中心化 · 抗审查 · 开放协议
+          </span>
+        </p>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="#about"
+            className="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-purple-600/25"
+          >
+            了解 Nostr
+          </a>
+          <a
+            href="#relays"
+            className="px-8 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-purple-400 dark:hover:border-purple-500 font-medium rounded-lg transition-colors"
+          >
+            加入社区
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
