@@ -17,11 +17,11 @@ export function BlogList() {
               >
                 <Link to={`/blog/${post.slug}`}>
                   <h2 className="text-2xl font-semibold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors mb-2">
-                    {post.title}
+                    {post.frontmatter.title}
                   </h2>
                 </Link>
                 <div className="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-3">
-                  {post.authors.map((author, index) => {
+                  {post.frontmatter.authors.map((author, index) => {
                     const authorPubkey = getPubkeyFromName(author);
                     return (
                       <>
@@ -37,27 +37,32 @@ export function BlogList() {
                         ) : (
                           <span>{author}</span>
                         )}
-                        {index < post.authors.length - 1 && <span>&</span>}
+                        {index < post.frontmatter.authors.length - 1 && (
+                          <span>&</span>
+                        )}
                       </>
                     );
                   })}
                   <span>•</span>
-                  <time dateTime={post.date}>
-                    {new Date(post.date).toLocaleDateString("zh-CN", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                  <time dateTime={post.frontmatter.date}>
+                    {new Date(post.frontmatter.date).toLocaleDateString(
+                      "zh-CN",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
                   </time>
                 </div>
-                {post.description && (
+                {post.frontmatter.description && (
                   <p className="text-slate-600 dark:text-slate-300 mb-4">
-                    {post.description}
+                    {post.frontmatter.description}
                   </p>
                 )}
-                {post.tags && post.tags.length > 0 && (
+                {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
                   <div className="flex flex-wrap gap-2">
-                    {post.tags.map((tag) => (
+                    {post.frontmatter.tags.map((tag) => (
                       <span
                         key={tag}
                         className="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full"
