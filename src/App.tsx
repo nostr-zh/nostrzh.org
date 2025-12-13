@@ -1,4 +1,5 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { useEffect } from "react";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import {
   Header,
   Hero,
@@ -9,6 +10,16 @@ import {
   BlogList,
   BlogPost,
 } from "./components";
+
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function HomePage() {
   return (
@@ -24,6 +35,7 @@ function HomePage() {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <div className="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100">
         <Header />
         <main>
