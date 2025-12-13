@@ -6,3 +6,4 @@ export { Resources } from "./Resources";
 export { Footer } from "./Footer";
 export { BlogList } from "./BlogList";
 export { BlogPost } from "./BlogPost";
+export { NostrComments } from "./NostrComments";

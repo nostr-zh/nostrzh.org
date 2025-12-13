@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { MDXProvider } from "@mdx-js/react";
 import { getBlogPost } from "../lib/blog";
 import { getNostrProfileUrl, getPubkeyFromName } from "../lib/nostr";
+import { NostrComments } from "./NostrComments";
 
 // MDX 组件样式映射
 const components = {
@@ -198,14 +199,24 @@ export function BlogPost() {
           </MDXProvider>
         </div>
 
-        <footer className="mt-12 pt-8 border-t border-slate-300 dark:border-slate-700">
+        <div className="mt-12 pt-4 border-t border-slate-300 dark:border-slate-700">
           <Link
             to="/blog"
             className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline"
           >
             ← 返回博客列表
           </Link>
-        </footer>
+        </div>
+
+        {/* Nostr 评论区 */}
+        <NostrComments
+          articleSlug={slug}
+          articleAuthorPubkeys={
+            frontmatter.authors
+              .map((author) => getPubkeyFromName(author))
+              .filter(Boolean) as string[]
+          }
+        />
       </div>
     </article>
   );

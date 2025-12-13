@@ -52,10 +52,3 @@ tags: # 可选
 
 您的 Markdown 内容...
 ```
-
-### 支持的功能
-
-- 标准 Markdown 语法（标题、列表、链接、图片等）
-- GitHub Flavored Markdown（表格、任务列表、删除线等）
-- 代码高亮
-- React 组件（MDX 特性）
