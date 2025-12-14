@@ -166,14 +166,14 @@ export function NostrComments({
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="分享你的想法..."
             rows={3}
-            className="w-full px-5 py-4 rounded-2xl resize-none
+            className="w-full px-5 py-4 rounded-2xl
                      bg-slate-50 dark:bg-slate-800/50 
                      text-slate-900 dark:text-white
                      border-0 ring-1 ring-slate-200 dark:ring-slate-700
                      focus:outline-none focus:ring-2 
                      focus:ring-purple-500/80 dark:focus:ring-purple-400/80
                      placeholder-slate-400 dark:placeholder-slate-500
-                     transition-all duration-200"
+                     transition-colors duration-200"
             disabled={isSubmitting}
           />
         </div>
