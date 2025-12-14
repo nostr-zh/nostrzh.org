@@ -150,7 +150,7 @@ export function NostrComments({
 
   return (
     <div className="mt-12">
-      <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-8 flex items-center gap-3">
+      <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-4 flex items-center gap-3">
         <span className="w-1 h-6 bg-linear-to-b from-purple-500 to-indigo-500 rounded-full"></span>
         评论
         <span className="text-sm font-normal text-slate-400 dark:text-slate-500">
@@ -166,7 +166,7 @@ export function NostrComments({
             onChange={(e) => setCommentText(e.target.value)}
             placeholder="分享你的想法..."
             rows={3}
-            className="w-full px-5 py-4 rounded-2xl
+            className="w-full px-5 pt-4 rounded-2xl
                      bg-slate-50 dark:bg-slate-800/50 
                      text-slate-900 dark:text-white
                      border-0 ring-1 ring-slate-200 dark:ring-slate-700
@@ -184,7 +184,7 @@ export function NostrComments({
           </div>
         )}
 
-        <div className="flex items-center justify-between mt-4">
+        <div className="flex items-center gap-2 justify-between mt-2">
           <p className="text-sm text-slate-500 dark:text-slate-400">
             发布评论，需要安装 Nostr 浏览器扩展（如{" "}
             <a
@@ -209,7 +209,7 @@ export function NostrComments({
           <button
             type="submit"
             disabled={isSubmitting || !commentText.trim()}
-            className="px-5 py-2 cursor-pointer bg-linear-to-r from-purple-500/80 to-indigo-500/80 
+            className="px-5 py-2 cursor-pointer shrink-0 bg-linear-to-r from-purple-500/80 to-indigo-500/80 
                      hover:from-purple-500 hover:to-indigo-500
                      disabled:from-slate-300 disabled:to-slate-400 dark:disabled:from-slate-600 dark:disabled:to-slate-700
                      text-white text-sm font-medium rounded-xl transition-all duration-200

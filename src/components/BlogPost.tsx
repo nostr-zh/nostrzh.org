@@ -1,5 +1,5 @@
-import { useParams, Link } from "react-router-dom";
 import { MDXProvider } from "@mdx-js/react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getBlogPost } from "../lib/blog";
 import { getNostrProfileUrl, getPubkeyFromName } from "../lib/nostr";
 import { NostrComments } from "./NostrComments";
@@ -120,6 +120,7 @@ const components = {
 
 export function BlogPost() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
 
   if (!slug) {
     return <NotFound />;
@@ -136,12 +137,12 @@ export function BlogPost() {
   return (
     <article className="py-20 bg-slate-50 dark:bg-slate-800 min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <Link
-          to="/blog"
-          className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline mb-8"
+        <a
+          onClick={() => navigate(-1)}
+          className="inline-flex items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:underline mb-8"
         >
-          ← 返回博客列表
-        </Link>
+          ← 返回
+        </a>
 
         <header className="mb-8">
           <h1 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
@@ -200,12 +201,12 @@ export function BlogPost() {
         </div>
 
         <div className="mt-12 pt-4 border-t border-slate-300 dark:border-slate-700">
-          <Link
-            to="/blog"
-            className="inline-flex items-center text-purple-600 dark:text-purple-400 hover:underline"
+          <a
+            onClick={() => navigate(-1)}
+            className="inline-flex items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:underline"
           >
-            ← 返回博客列表
-          </Link>
+            ← 返回
+          </a>
         </div>
 
         {/* Nostr 评论区 */}

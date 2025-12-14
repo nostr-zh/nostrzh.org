@@ -29,7 +29,7 @@ export function Hero() {
             了解 Nostr
           </a>
           <a
-            href="#relays"
+            href="#relay"
             className="px-8 py-3 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 hover:border-purple-400 dark:hover:border-purple-500 font-medium rounded-lg transition-colors"
           >
             加入社区

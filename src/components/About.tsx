@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const KeyIcon = () => (
   <svg
     className="w-5 h-5 text-purple-600 dark:text-purple-400"
@@ -102,6 +104,15 @@ export function About() {
             旨在创建一个抗审查的全球社交网络。它不依赖任何中心化服务器，
             你的身份和数据完全由你自己掌控。
           </p>
+
+          <div className="text-center mt-8">
+            <Link
+              to="/blog/what-is-nostr"
+              className="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-purple-600/25"
+            >
+              深入了解 Nostr
+            </Link>
+          </div>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
