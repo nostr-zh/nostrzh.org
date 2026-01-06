@@ -1,0 +1,114 @@
+---
+import { undefined } from "astro:schema";
+import { NostrComments } from "../../components/NostrComments";
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import { blogPosts } from "../../lib/blog.tsx";
+import { getNostrProfileUrl } from "../../lib/nostr";
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post },
+  }));
+}
+
+const { slug } = Astro.params;
+const post = blogPosts.find((p) => p.slug === slug);
+
+if (!post) {
+  throw new Error(`Blog post not found: ${slug}`);
+}
+
+const { frontmatter, Content } = post;
+---
+
+<BlogLayout title={frontmatter.title} description={frontmatter.description}>
+  <article class="py-20 bg-slate-50 dark:bg-slate-800 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <a
+        onclick={`history.go(-1)`}
+        class="inline-flex items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:underline mb-8"
+      >
+        ← 返回
+      </a>
+
+      <header class="mb-8">
+        <h1 class="text-4xl font-bold text-slate-900 dark:text-white mb-4">
+          {frontmatter.title}
+        </h1>
+        <div
+          class="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400"
+        >
+          {
+            frontmatter.authors.map((author, index) => {
+              const { name, pubkey } =
+                typeof author === "string" ? { name: author } : author;
+              return (
+                <>
+                  {pubkey ? (
+                    <a
+                      href={getNostrProfileUrl(pubkey)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="hover:underline"
+                    >
+                      {name}
+                    </a>
+                  ) : (
+                    <span>{name}</span>
+                  )}
+                  {index < frontmatter.authors.length - 1 && <span>&</span>}
+                </>
+              );
+            })
+          }
+          <span>•</span>
+          <time datetime={frontmatter.date}>
+            {
+              new Date(frontmatter.date).toLocaleDateString("zh-CN", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            }
+          </time>
+        </div>
+        {
+          frontmatter.tags && frontmatter.tags.length > 0 && (
+            <div class="flex flex-wrap gap-2 mt-4">
+              {frontmatter.tags.map((tag: string) => (
+                <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full">
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )
+        }
+      </header>
+
+      <div class="prose prose-slate dark:prose-invert max-w-none">
+        <Content />
+      </div>
+
+      <div class="mt-12 pt-4 border-t border-slate-300 dark:border-slate-700">
+        <a
+          onclick={`history.go(-1)`}
+          class="inline-flex items-center cursor-pointer text-purple-600 dark:text-purple-400 hover:underline"
+        >
+          ← 返回
+        </a>
+      </div>
+
+      {/* Nostr 评论区 */}
+      <NostrComments
+        articleSlug={slug}
+        articleAuthorPubkeys={frontmatter.authors
+          .map((author) =>
+            typeof author === "string" ? undefined : author.pubkey
+          )
+          .filter(Boolean) as string[]}
+        client:visible
+      />
+    </div>
+  </article>
+</BlogLayout>

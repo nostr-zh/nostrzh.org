@@ -43,7 +43,8 @@ npm run preview
 title: 文章标题
 date: 2025-12-12
 authors:
-  - 作者名字（记得在 `public/.well-known/nostr.json` 中添加您的 pubkey）
+  - name: 作者名字
+    pubkey: 作者的 Nostr 公钥（可选）
 description: 文章简短描述（可选）
 tags: # 可选
   - 标签1

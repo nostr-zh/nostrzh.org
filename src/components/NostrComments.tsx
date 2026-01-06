@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import type { Event as NostrEvent } from "nostr-tools";
+import type { EventTemplate, NostrEvent } from "nostr-tools";
 import { kinds } from "nostr-tools";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { BIG_RELAY_URLS } from "../constants";
@@ -11,6 +11,15 @@ import {
   getNostrProfileUrl,
   type TProfile,
 } from "../lib/nostr";
+
+declare global {
+  interface Window {
+    nostr?: {
+      getPublicKey: () => Promise<string>;
+      signEvent: (event: EventTemplate) => Promise<NostrEvent>;
+    };
+  }
+}
 
 interface NostrCommentsProps {
   articleSlug: string;

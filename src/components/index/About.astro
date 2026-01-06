@@ -1,0 +1,105 @@
+---
+import { KeyRound, Globe, Code, ArrowRightLeft } from "@lucide/astro";
+
+const features = [
+  {
+    icon: KeyRound,
+    title: "真正的所有权",
+    description: "你的身份由密钥对定义，没有人可以封禁你的账户。",
+  },
+  {
+    icon: Globe,
+    title: "去中心化",
+    description: "数据分布在多个 Relay 上，没有单点故障，更抗审查。",
+  },
+  {
+    icon: Code,
+    title: "简洁协议",
+    description: "基于 WebSocket 和 JSON，简单易懂，易于开发。",
+  },
+  {
+    icon: ArrowRightLeft,
+    title: "互操作性",
+    description: "一个身份通行所有 Nostr 应用，无需重复注册。",
+  },
+];
+---
+
+<section id="about" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-white dark:bg-slate-900"></div>
+  <div
+    class="absolute top-0 left-1/2 -translate-x-1/2 w-200 h-150 bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] from-indigo-100/60 via-transparent to-transparent dark:from-indigo-900/20 blur-3xl"
+  >
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4"
+      >
+        什么是 Nostr？
+      </h2>
+      <p
+        class="text-lg text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed"
+      >
+        Nostr（Notes and Other Stuff Transmitted by
+        Relays）是一个简洁、开放的协议，
+        旨在创建一个抗审查的全球社交网络。它不依赖任何中心化服务器，
+        你的身份和数据完全由你自己掌控。
+      </p>
+
+      <div class="text-center mt-8">
+        <a
+          href="/blog/what-is-nostr"
+          class="px-8 py-3 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors shadow-lg shadow-purple-600/25"
+        >
+          深入了解 Nostr
+        </a>
+      </div>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {
+        features.map((feature) => (
+          <div class="p-6 rounded-2xl bg-white/80 dark:bg-slate-800/50 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:border-purple-300 dark:hover:border-purple-600 transition-colors">
+            <div class="w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/50 flex items-center justify-center mb-4">
+              <feature.icon class="text-purple-400" size={18} />
+            </div>
+            <h3 class="text-lg font-semibold text-slate-800 dark:text-white mb-2">
+              {feature.title}
+            </h3>
+            <p class="text-slate-600 dark:text-slate-400 text-sm">
+              {feature.description}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-16 p-8 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50"
+    >
+      <h3 class="text-xl font-semibold text-slate-800 dark:text-white mb-4">
+        如何开始？
+      </h3>
+      <ol
+        class="list-decimal list-inside space-y-2 text-slate-600 dark:text-slate-300"
+      >
+        <li>
+          选择一个{" "}
+          <a
+            href='"https://nostrapps.com/"'
+            target="_blank"
+            rel="noopener noreferrer"
+            class="underline hover:text-purple-500 transition-colors"
+          >
+            Nostr 客户端
+          </a>
+        </li>
+        <li>生成或导入你的密钥对（私钥务必安全保管！）</li>
+        <li>连接到 Relay，开始发布和订阅内容</li>
+        <li>加入我们的中文社区 Relay，与更多中文用户交流</li>
+      </ol>
+    </div>
+  </div>
+</section>

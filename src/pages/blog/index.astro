@@ -1,0 +1,91 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { blogPosts } from "../../lib/blog.tsx";
+import { getNostrProfileUrl } from "../../lib/nostr";
+---
+
+<Layout>
+  <section class="py-20 bg-slate-50 dark:bg-slate-800 min-h-screen">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="space-y-8">
+        {
+          blogPosts.map((post) => {
+            return (
+              <article class="bg-white dark:bg-slate-900 rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <a href={`/blog/${post.slug}`}>
+                  <h2 class="text-2xl font-semibold text-slate-900 dark:text-white hover:text-purple-600 dark:hover:text-purple-400 transition-colors mb-2">
+                    {post.frontmatter.title}
+                  </h2>
+                </a>
+                <div class="flex flex-wrap items-center gap-2 text-sm text-slate-500 dark:text-slate-400 mb-3">
+                  {post.frontmatter.authors.map((author, index) => {
+                    const { name, pubkey } =
+                      typeof author === "string" ? { name: author } : author;
+                    return (
+                      <>
+                        {pubkey ? (
+                          <a
+                            href={getNostrProfileUrl(pubkey)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="hover:underline"
+                          >
+                            {name}
+                          </a>
+                        ) : (
+                          <span>{name}</span>
+                        )}
+                        {index < post.frontmatter.authors.length - 1 && (
+                          <span>&</span>
+                        )}
+                      </>
+                    );
+                  })}
+                  <span>•</span>
+                  <time datetime={post.frontmatter.date}>
+                    {new Date(post.frontmatter.date).toLocaleDateString(
+                      "zh-CN",
+                      {
+                        year: "numeric",
+                        month: "long",
+                        day: "numeric",
+                      }
+                    )}
+                  </time>
+                </div>
+                {post.frontmatter.description && (
+                  <p class="text-slate-600 dark:text-slate-300 mb-4">
+                    {post.frontmatter.description}
+                  </p>
+                )}
+                {post.frontmatter.tags && post.frontmatter.tags.length > 0 && (
+                  <div class="flex flex-wrap gap-2">
+                    {post.frontmatter.tags.map((tag) => (
+                      <span class="px-3 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 text-sm rounded-full">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                <a
+                  href={`/blog/${post.slug}`}
+                  class="inline-block mt-4 text-purple-600 dark:text-purple-400 hover:underline"
+                >
+                  阅读全文 →
+                </a>
+              </article>
+            );
+          })
+        }
+      </div>
+
+      {
+        blogPosts.length === 0 && (
+          <div class="text-center py-12">
+            <p class="text-slate-500 dark:text-slate-400">暂无文章</p>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</Layout>

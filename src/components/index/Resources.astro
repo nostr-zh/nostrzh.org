@@ -1,0 +1,82 @@
+---
+import { Star, FileText, BookOpen, Smartphone } from "@lucide/astro";
+
+const resources = [
+  {
+    title: "Awesome Nostr 中文",
+    description: "中文开发者的 Nostr 作品集，收录优秀的中文 Nostr 项目和资源。",
+    url: "https://github.com/nostr-zh/awesome-nostr-zh",
+    icon: Star,
+  },
+  {
+    title: "Nostr 协议规范",
+    description:
+      "了解 Nostr 协议的技术细节，包括 NIP（Nostr Implementation Possibilities）。",
+    url: "https://github.com/nostr-protocol/nips",
+    icon: FileText,
+  },
+  {
+    title: "Nostr.how",
+    description: "Nostr 入门指南，帮助新手快速上手 Nostr 生态。",
+    url: "https://nostr.how/zh",
+    icon: BookOpen,
+  },
+  {
+    title: "Nostr 客户端",
+    description: "发现各种 Nostr 客户端，选择最适合你的应用。",
+    url: "https://nostrapps.com/",
+    icon: Smartphone,
+  },
+];
+---
+
+<section id="resources" class="py-24 relative overflow-hidden">
+  <div class="absolute inset-0 bg-white dark:bg-slate-900"></div>
+  <div
+    class="absolute bottom-0 right-0 w-125 h-125 bg-purple-100/40 dark:bg-purple-900/10 rounded-full blur-3xl translate-y-1/2 translate-x-1/4"
+  >
+  </div>
+
+  <div class="max-w-6xl mx-auto px-6 relative">
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4"
+      >
+        资源与链接
+      </h2>
+      <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+        探索更多 Nostr 相关资源
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-6">
+      {
+        resources.map((resource, index) => (
+          <a
+            href={resource.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="group p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:border-purple-400 dark:hover:border-purple-500 transition-all hover:shadow-lg"
+          >
+            <div class="flex items-start gap-4">
+              <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
+                <resource.icon class="text-slate-400" size={18} />
+              </div>
+              <div class="flex-1">
+                <h3 class="text-lg font-semibold text-slate-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors mb-2">
+                  {resource.title}
+                  <span class="inline-block ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                    →
+                  </span>
+                </h3>
+                <p class="text-slate-600 dark:text-slate-400 text-sm">
+                  {resource.description}
+                </p>
+              </div>
+            </div>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

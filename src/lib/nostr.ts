@@ -4,7 +4,6 @@ import {
   type NostrEvent,
   type VerifiedEvent,
 } from "nostr-tools";
-import WellKnownNostr from "../../public/.well-known/nostr.json";
 import { BIG_RELAY_URLS } from "../constants";
 import { isOnionUrl, isWebsocketUrl, normalizeUrl } from "./url";
 
@@ -36,10 +35,6 @@ export type TNip07 = {
     decrypt?: (pubkey: string, cipherText: string) => Promise<string>;
   };
 };
-
-export function getPubkeyFromName(name: string): string | null {
-  return (WellKnownNostr.names as Record<string, string>)[name] || null;
-}
 
 export function getNostrProfileUrl(pubkey: string): string {
   return `https://jumble.social/users/${pubkey}`;
