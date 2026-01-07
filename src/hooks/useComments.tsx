@@ -42,6 +42,12 @@ export function useComments({
     setEvents([]);
     setError(null);
     try {
+      const urls = [url];
+      if (url.endsWith("/")) {
+        urls.push(url.slice(0, -1));
+      } else {
+        urls.push(url + "/");
+      }
       const _relays = await determineRelays(relays, pubkey);
       const comments: NostrEvent[] = [];
       let eosed = false;
@@ -49,7 +55,7 @@ export function useComments({
         _relays,
         {
           kinds: [kinds.Comment],
-          "#I": [url],
+          "#I": urls,
           limit,
         },
         {
