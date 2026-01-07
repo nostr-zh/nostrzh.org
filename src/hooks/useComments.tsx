@@ -132,6 +132,7 @@ export function useComments({
       return null;
     };
 
+    events.sort((a, b) => b.created_at - a.created_at);
     events.forEach((event) => {
       const parentKey = getParentKey(event);
       if (parentKey) {
