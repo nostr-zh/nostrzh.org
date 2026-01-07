@@ -1,0 +1,41 @@
+import { formatDate } from "../../lib/date";
+import type { TComment } from "../../types";
+import Avatar from "./Avatar";
+import Username from "./Username";
+
+export default function CommentItem({ comment }: { comment: TComment }) {
+  const { event, children } = comment;
+
+  return (
+    <div className="pt-6">
+      <div className="flex items-start gap-3 relative">
+        <Avatar pubkey={event.pubkey} />
+
+        <div className="flex-1 min-w-0 pt-0.5">
+          <div className="flex items-baseline gap-2 mb-1">
+            <Username pubkey={event.pubkey} />
+            <span className="text-xs text-slate-400 dark:text-slate-500">
+              {formatDate(event.created_at)}
+            </span>
+          </div>
+
+          <p className="text-slate-600 dark:text-slate-300 text-[15px] leading-relaxed whitespace-pre-wrap wrap-break-word">
+            {event.content}
+          </p>
+        </div>
+
+        {children.length > 0 && (
+          <div className="absolute left-5 top-11 bottom-0 w-2 border-l border-slate-200 dark:border-slate-700" />
+        )}
+      </div>
+      {children.length > 0 && (
+        <div className="pl-8 relative">
+          <div className="absolute left-5 top-0 h-11 w-2 rounded-bl-lg border-l border-b border-slate-200 dark:border-slate-700" />
+          {children.map((child) => (
+            <CommentItem key={child.event.id} comment={child} />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}

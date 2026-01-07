@@ -1,20 +1,29 @@
-import { type EventTemplate, type VerifiedEvent } from "nostr-tools";
+import { loadNostrUser } from "@nostr/gadgets/metadata";
+import { useEffect, useMemo, useState } from "react";
 
-export type TNip07 = {
-  getPublicKey: () => Promise<string>;
-  signEvent: (draftEvent: EventTemplate) => Promise<VerifiedEvent>;
-  nip04?: {
-    encrypt?: (pubkey: string, plainText: string) => Promise<string>;
-    decrypt?: (pubkey: string, cipherText: string) => Promise<string>;
-  };
-};
+export default function Avatar({ pubkey }: { pubkey: string }) {
+  const [avatar, setAvatar] = useState<string | undefined>(undefined);
+  const defaultAvatar = useMemo(() => generateImageByPubkey(pubkey), [pubkey]);
 
-export function getNostrProfileUrl(pubkey: string): string {
-  return `https://jumble.social/users/${pubkey}`;
+  useEffect(() => {
+    loadNostrUser(pubkey).then((profile) => {
+      setAvatar(profile.image);
+    });
+  }, [pubkey]);
+
+  return (
+    <img
+      src={avatar ?? defaultAvatar}
+      className="shrink-0 size-10 rounded-full ring-2 ring-white dark:ring-slate-800 shadow-sm"
+      onError={(e) => {
+        (e.target as HTMLImageElement).src = defaultAvatar;
+      }}
+    />
+  );
 }
 
 const pubkeyImageCache = new Map<string, string>();
-export function generateImageByPubkey(pubkey: string): string {
+function generateImageByPubkey(pubkey: string): string {
   if (pubkeyImageCache.has(pubkey)) {
     return pubkeyImageCache.get(pubkey)!;
   }
