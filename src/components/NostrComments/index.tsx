@@ -122,7 +122,7 @@ export function NostrComments({
   );
 
   return (
-    <div className="mt-12">
+    <div className="mt-6">
       <h2 className="text-xl font-medium text-slate-900 dark:text-white mb-4 flex items-center gap-3">
         <span className="w-1 h-6 bg-linear-to-b from-purple-500 to-indigo-500 rounded-full"></span>
         评论

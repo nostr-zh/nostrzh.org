@@ -19,3 +19,6 @@
 .prose blockquote {
   @apply border-l-4 border-purple-500 pl-4 italic text-slate-600 dark:text-slate-400 my-4;
 }
+.prose :is(h1, h2, h3, h4, h5, h6) {
+  scroll-margin-top: 64px;
+}
