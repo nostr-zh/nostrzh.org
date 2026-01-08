@@ -1,12 +1,15 @@
+import type { NostrEvent } from "nostr-tools";
 import { useComments } from "../../hooks/useComments";
 import CommentItem from "./CommentItem";
 
 export default function CommentList({
   url,
   pubkey,
+  onClickReply,
 }: {
   url: string;
   pubkey?: string;
+  onClickReply: (commentEvent: NostrEvent) => void;
 }) {
   const { comments, loading, loadingMore, loadMore, hasMore } = useComments({
     url,
@@ -32,7 +35,11 @@ export default function CommentList({
   return (
     <div>
       {comments.map((comment) => (
-        <CommentItem key={comment.event.id} comment={comment} />
+        <CommentItem
+          key={comment.event.id}
+          comment={comment}
+          onClickReply={onClickReply}
+        />
       ))}
       {loadingMore ? (
         <div className="flex items-center justify-center py-12">

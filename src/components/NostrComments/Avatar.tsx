@@ -1,7 +1,14 @@
 import { loadNostrUser } from "@nostr/gadgets/metadata";
 import { useEffect, useMemo, useState } from "react";
+import { cn } from "../../lib/utils";
 
-export default function Avatar({ pubkey }: { pubkey: string }) {
+export default function Avatar({
+  pubkey,
+  className,
+}: {
+  pubkey: string;
+  className?: string;
+}) {
   const [avatar, setAvatar] = useState<string | undefined>(undefined);
   const defaultAvatar = useMemo(() => generateImageByPubkey(pubkey), [pubkey]);
 
@@ -14,7 +21,10 @@ export default function Avatar({ pubkey }: { pubkey: string }) {
   return (
     <img
       src={avatar ?? defaultAvatar}
-      className="shrink-0 size-10 rounded-full ring-2 ring-white dark:ring-slate-800 shadow-sm"
+      className={cn(
+        "shrink-0 size-10 rounded-full ring-2 ring-white dark:ring-slate-800 shadow-sm",
+        className
+      )}
       onError={(e) => {
         (e.target as HTMLImageElement).src = defaultAvatar;
       }}
