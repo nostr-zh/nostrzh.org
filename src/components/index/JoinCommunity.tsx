@@ -8,12 +8,11 @@ import {
   kinds,
   nip19,
 } from "nostr-tools";
-import { useCallback, useEffect, useState } from "react";
-import { DEFAULT_RELAY_URLS } from "../../constants";
+import { useCallback, useState } from "react";
+import { BACKEND_SERVER_URL, DEFAULT_RELAY_URLS } from "../../constants";
+import { useWhitelistUsers } from "../../hooks/useWhitelistUsers";
 import CopyButton from "./CopyButton";
 import Modal from "./Modal";
-
-const API_BASE = "https://api.nostrzh.org/v1";
 
 type ModalType = "create-account" | "quiz" | "success" | null;
 
@@ -44,7 +43,7 @@ export default function JoinCommunity() {
   const [pubkeyInput, setPubkeyInput] = useState("");
   const [hexPubkey, setHexPubkey] = useState("");
   const [npubDisplay, setNpubDisplay] = useState("");
-  const [whitelistUsers, setWhitelistUsers] = useState<string[]>([]);
+  const { users: whitelistUsers } = useWhitelistUsers();
   const [isWhitelisted, setIsWhitelisted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -60,14 +59,6 @@ export default function JoinCommunity() {
 
   // Account creation state
   const [newAccount, setNewAccount] = useState<NewAccount | null>(null);
-
-  // Fetch whitelist users on mount
-  useEffect(() => {
-    fetch(`${API_BASE}/users`)
-      .then((res) => res.json())
-      .then((data) => setWhitelistUsers(data))
-      .catch(console.error);
-  }, []);
 
   const parsePubkey = useCallback(
     (
@@ -222,7 +213,7 @@ export default function JoinCommunity() {
     setQuizResult(null);
 
     try {
-      const res = await fetch(`${API_BASE}/quiz/start`, {
+      const res = await fetch(`${BACKEND_SERVER_URL}/quiz/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pubkey }),
@@ -261,7 +252,7 @@ export default function JoinCommunity() {
     setQuizError("");
 
     try {
-      const res = await fetch(`${API_BASE}/quiz/submit`, {
+      const res = await fetch(`${BACKEND_SERVER_URL}/quiz/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -279,7 +270,7 @@ export default function JoinCommunity() {
 
       if (result.passed) {
         // Join community
-        const joinRes = await fetch(`${API_BASE}/users/join`, {
+        const joinRes = await fetch(`${BACKEND_SERVER_URL}/users/join`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ pubkey: hexPubkey }),
