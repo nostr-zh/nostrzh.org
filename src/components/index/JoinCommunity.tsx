@@ -11,6 +11,7 @@ import {
 import { useCallback, useState } from "react";
 import { BACKEND_SERVER_URL, DEFAULT_RELAY_URLS } from "../../constants";
 import { useWhitelistUsers } from "../../hooks/useWhitelistUsers";
+import { getNostrAuthToken } from "../../lib/nostr";
 import CopyButton from "./CopyButton";
 import Modal from "./Modal";
 
@@ -270,10 +271,20 @@ export default function JoinCommunity() {
 
       if (result.passed) {
         // Join community
-        const joinRes = await fetch(`${BACKEND_SERVER_URL}/users/join`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ pubkey: hexPubkey }),
+        const url = `${BACKEND_SERVER_URL}/users/join`;
+        const method = "POST";
+        const payload = { pubkey: hexPubkey };
+        const token = getNostrAuthToken({
+          url,
+          method,
+          payload,
+          difficulty: 20,
+        });
+
+        const joinRes = await fetch(url, {
+          method,
+          headers: { "Content-Type": "application/json", Authorization: token },
+          body: JSON.stringify(payload),
         });
 
         if (!joinRes.ok) {
