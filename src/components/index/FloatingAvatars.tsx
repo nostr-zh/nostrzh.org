@@ -62,15 +62,21 @@ export default function FloatingAvatars() {
 
   // Initialize avatars with random positions
   const initialAvatars = useMemo(() => {
-    return users.map((pubkey) => ({
-      pubkey,
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: 32 + Math.random() * 24, // 32-56px
-      speedX: (Math.random() - 0.5) * 0.02,
-      speedY: (Math.random() - 0.5) * 0.02,
-      opacity: 0.15 + Math.random() * 0.15, // 0.15-0.3
-    }));
+    return users.map((pubkey) => {
+      const size = 32 + Math.random() * 24; // 32-56px
+      // Reserve enough margin to prevent clipping with translate(-50%, -50%)
+      // Using 8% margin to ensure avatars don't get clipped at edges
+      const marginPercent = 8;
+      return {
+        pubkey,
+        x: marginPercent + Math.random() * (100 - 2 * marginPercent),
+        y: marginPercent + Math.random() * (100 - 2 * marginPercent),
+        size,
+        speedX: (Math.random() - 0.5) * 0.02,
+        speedY: (Math.random() - 0.5) * 0.02,
+        opacity: 0.15 + Math.random() * 0.15, // 0.15-0.3
+      };
+    });
   }, [users]);
 
   // Load avatar images
@@ -99,6 +105,10 @@ export default function FloatingAvatars() {
   useEffect(() => {
     if (avatars.length === 0) return;
 
+    const marginPercent = 0;
+    const minPos = marginPercent;
+    const maxPos = 100 - marginPercent;
+
     const animate = () => {
       setAvatars((prev) =>
         prev.map((avatar) => {
@@ -107,14 +117,14 @@ export default function FloatingAvatars() {
           let newSpeedX = avatar.speedX;
           let newSpeedY = avatar.speedY;
 
-          // Bounce off edges
-          if (newX < 0 || newX > 100) {
+          // Bounce off edges with margin
+          if (newX < minPos || newX > maxPos) {
             newSpeedX = -newSpeedX;
-            newX = Math.max(0, Math.min(100, newX));
+            newX = Math.max(minPos, Math.min(maxPos, newX));
           }
-          if (newY < 0 || newY > 100) {
+          if (newY < minPos || newY > maxPos) {
             newSpeedY = -newSpeedY;
-            newY = Math.max(0, Math.min(100, newY));
+            newY = Math.max(minPos, Math.min(maxPos, newY));
           }
 
           return {
@@ -146,30 +156,26 @@ export default function FloatingAvatars() {
       className="absolute inset-0 overflow-hidden pointer-events-none"
     >
       {avatars.map((avatar) => (
-        <div
+        <img
           key={avatar.pubkey}
-          className="absolute"
+          src={avatar.image || generateImageByPubkey(avatar.pubkey)}
+          className="rounded-full object-cover object-center absolute shrink-0"
           style={{
             left: `${avatar.x}%`,
             top: `${avatar.y}%`,
+            width: avatar.size,
+            height: avatar.size,
+            minWidth: avatar.size,
+            minHeight: avatar.size,
             transform: "translate(-50%, -50%)",
             opacity: avatar.opacity,
           }}
-        >
-          <img
-            src={avatar.image || generateImageByPubkey(avatar.pubkey)}
-            className="rounded-full object-cover object-center"
-            style={{
-              width: avatar.size,
-              height: avatar.size,
-            }}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = generateImageByPubkey(
-                avatar.pubkey
-              );
-            }}
-          />
-        </div>
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = generateImageByPubkey(
+              avatar.pubkey
+            );
+          }}
+        />
       ))}
     </div>
   );
