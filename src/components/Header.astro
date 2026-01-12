@@ -1,4 +1,6 @@
 ---
+import { Menu, X } from "@lucide/astro";
+
 const isHome = Astro.url.pathname === "/";
 ---
 
@@ -12,7 +14,9 @@ const isHome = Astro.url.pathname === "/";
     >
       NostrZH
     </a>
-    <nav class="flex items-center gap-6">
+
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex items-center gap-6">
       {
         isHome ? (
           <>
@@ -51,5 +55,151 @@ const isHome = Astro.url.pathname === "/";
         博客
       </a>
     </nav>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="mobile-menu-button"
+      class="md:hidden p-2 text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50 rounded"
+      aria-label="Toggle menu"
+    >
+      <Menu
+        id="menu-open-icon"
+        class="size-6 transition-transform duration-300"
+      />
+      <X
+        id="menu-close-icon"
+        class="size-6 hidden transition-transform duration-300"
+      />
+    </button>
   </div>
+
+  <!-- Mobile Navigation -->
+  <nav
+    id="mobile-menu"
+    class="md:hidden bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-800 overflow-hidden transition-all duration-300 ease-in-out max-h-0"
+  >
+    <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
+      {
+        isHome ? (
+          <>
+            <a
+              href="#about"
+              class="mobile-link text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors py-2 px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              关于
+            </a>
+            <a
+              href="#relay"
+              class="mobile-link text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors py-2 px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              社区 Relay
+            </a>
+            <a
+              href="#resources"
+              class="mobile-link text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors py-2 px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+            >
+              资源
+            </a>
+          </>
+        ) : (
+          <a
+            href="/"
+            class="mobile-link text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors py-2 px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+          >
+            首页
+          </a>
+        )
+      }
+      <a
+        href="/blog"
+        class="mobile-link text-slate-600 dark:text-slate-300 hover:text-purple-600 dark:hover:text-purple-400 transition-colors py-2 px-2 rounded hover:bg-slate-100 dark:hover:bg-slate-800"
+      >
+        博客
+      </a>
+    </div>
+  </nav>
 </header>
+
+<script>
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuOpenIcon = document.getElementById("menu-open-icon");
+  const menuCloseIcon = document.getElementById("menu-close-icon");
+
+  let isOpen = false;
+
+  mobileMenuButton?.addEventListener("click", () => {
+    isOpen = !isOpen;
+
+    if (isOpen) {
+      // Open menu with animation
+      mobileMenu?.style.setProperty("max-height", "500px");
+      mobileMenu?.classList.add("border-t");
+      menuOpenIcon?.classList.add("hidden");
+      menuCloseIcon?.classList.remove("hidden");
+
+      // Animate menu items
+      const links = mobileMenu?.querySelectorAll(".mobile-link");
+      links?.forEach((link, index) => {
+        setTimeout(() => {
+          link.classList.add("animate-fade-in-up");
+        }, index * 50);
+      });
+    } else {
+      // Close menu with animation
+      mobileMenu?.style.setProperty("max-height", "0");
+      mobileMenu?.classList.remove("border-t");
+      menuOpenIcon?.classList.remove("hidden");
+      menuCloseIcon?.classList.add("hidden");
+
+      // Reset animations
+      const links = mobileMenu?.querySelectorAll(".mobile-link");
+      links?.forEach((link) => {
+        link.classList.remove("animate-fade-in-up");
+      });
+    }
+  });
+
+  // Close mobile menu when clicking on a link
+  const mobileLinks = mobileMenu?.querySelectorAll("a");
+  mobileLinks?.forEach((link) => {
+    link.addEventListener("click", () => {
+      isOpen = false;
+      mobileMenu?.style.setProperty("max-height", "0");
+      menuOpenIcon?.classList.remove("hidden");
+      menuCloseIcon?.classList.add("hidden");
+
+      const links = mobileMenu?.querySelectorAll(".mobile-link");
+      links?.forEach((link) => {
+        link.classList.remove("animate-fade-in-up");
+      });
+    });
+  });
+</script>
+
+<style>
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-in-up {
+    animation: fadeInUp 0.3s ease-out forwards;
+  }
+
+  #menu-open-icon,
+  #menu-close-icon {
+    transform-origin: center;
+  }
+
+  #menu-open-icon.hidden,
+  #menu-close-icon.hidden {
+    transform: rotate(90deg);
+  }
+</style>
