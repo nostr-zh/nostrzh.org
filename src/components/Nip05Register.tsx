@@ -165,6 +165,11 @@ export default function Nip05Register() {
       return;
     }
 
+    if (name.length < 2 || name.length > 15) {
+      setError("NIP-05 标识长度应为 2-15 个字符");
+      return;
+    }
+
     setError("");
     setSuccess(false);
     setLoading(true);
@@ -368,7 +373,7 @@ export default function Nip05Register() {
                   value={name}
                   onChange={(e) => {
                     const value = e.target.value.toLocaleLowerCase().trim();
-                    if (value.length < 2 || value.length > 15) return;
+                    if (value.length > 15) return;
                     // 只允许小写字母和数字
                     if (/^[a-z0-9]*$/.test(value)) {
                       setName(value);
