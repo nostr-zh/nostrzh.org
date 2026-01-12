@@ -2,11 +2,10 @@ import { pool } from "@nostr/gadgets/global";
 import { loadRelayList } from "@nostr/gadgets/lists";
 import { seenOn } from "@nostr/gadgets/store";
 import dayjs from "dayjs";
+import type { NostrEvent } from "nostr-tools";
 import { useCallback, useState } from "react";
 import { DEFAULT_RELAY_URLS } from "../../constants";
-import type { NostrEvent } from "nostr-tools";
 import Avatar from "./Avatar";
-import Username from "./Username";
 
 export default function CommentEditor({
   url,

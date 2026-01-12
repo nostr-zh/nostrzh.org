@@ -3,15 +3,6 @@ import { useState } from "react";
 import CommentEditor from "./CommentEditor";
 import CommentList from "./CommentList";
 
-declare global {
-  interface Window {
-    nostr?: {
-      getPublicKey: () => Promise<string>;
-      signEvent: (event: EventTemplate) => Promise<NostrEvent>;
-    };
-  }
-}
-
 interface NostrCommentsProps {
   articleSlug: string;
   articleAuthorPubkeys?: string[];

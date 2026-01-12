@@ -8,7 +8,7 @@ export function useWhitelistUsers(limit?: number) {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`${BACKEND_SERVER_URL}/users`)
+    fetch(`${BACKEND_SERVER_URL}/v1/users`)
       .then((res) => res.json())
       .then((data: string[]) => {
         setUsers(limit ? data.slice(0, limit) : data);

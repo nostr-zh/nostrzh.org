@@ -10,7 +10,7 @@ import {
 } from "nostr-tools";
 import { minePow } from "nostr-tools/nip13";
 import { hashPayload } from "nostr-tools/nip98";
-import { hexToBytes, utf8Encoder } from "nostr-tools/utils";
+import { utf8Encoder } from "nostr-tools/utils";
 
 export type TNip07 = {
   getPublicKey: () => Promise<string>;
@@ -76,30 +76,35 @@ export function generateImageByPubkey(pubkey: string): string {
   return imageData;
 }
 
-export function getNostrAuthToken({
+export async function getNostrAuthToken({
   url,
   method,
   payload,
-  sk,
+  pubkey,
+  signer,
   difficulty,
 }: {
   url: string;
   method: string;
   payload?: Record<string, unknown>;
-  sk?: string;
+  pubkey?: string;
+  signer?: {
+    getPublicKey: () => Promise<string>;
+    signEvent: (draftEvent: EventTemplate) => Promise<VerifiedEvent>;
+  };
   difficulty?: number;
 }) {
-  let pubkey: string;
-  let privkey: Uint8Array<ArrayBufferLike>;
-  if (sk) {
-    privkey = hexToBytes(sk);
-    pubkey = getPublicKey(privkey);
-  } else {
-    privkey = generateSecretKey();
-    pubkey = getPublicKey(privkey);
+  if (!signer) {
+    const privkey = generateSecretKey();
+    signer = {
+      getPublicKey: async () => getPublicKey(privkey),
+      signEvent: async (draftEvent: EventTemplate) =>
+        finalizeEvent(draftEvent, privkey),
+    };
   }
+  const _pubkey = pubkey ?? (await signer.getPublicKey());
   let authEvent: UnsignedEvent = {
-    pubkey,
+    pubkey: _pubkey,
     kind: kinds.HTTPAuth,
     tags: [
       ["u", url],
@@ -117,7 +122,7 @@ export function getNostrAuthToken({
     authEvent = minePow(authEvent, difficulty);
   }
 
-  const finalEvent = finalizeEvent(authEvent, privkey);
+  const finalEvent = await signer.signEvent(authEvent);
   return (
     "Nostr " + base64.encode(utf8Encoder.encode(JSON.stringify(finalEvent)))
   );

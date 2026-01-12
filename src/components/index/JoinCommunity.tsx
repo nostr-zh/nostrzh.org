@@ -214,7 +214,7 @@ export default function JoinCommunity() {
     setQuizResult(null);
 
     try {
-      const res = await fetch(`${BACKEND_SERVER_URL}/quiz/start`, {
+      const res = await fetch(`${BACKEND_SERVER_URL}/v1/quiz/start`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ pubkey }),
@@ -253,7 +253,7 @@ export default function JoinCommunity() {
     setQuizError("");
 
     try {
-      const res = await fetch(`${BACKEND_SERVER_URL}/quiz/submit`, {
+      const res = await fetch(`${BACKEND_SERVER_URL}/v1/quiz/submit`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -271,10 +271,10 @@ export default function JoinCommunity() {
 
       if (result.passed) {
         // Join community
-        const url = `${BACKEND_SERVER_URL}/users/join`;
+        const url = `${BACKEND_SERVER_URL}/v1/users/join`;
         const method = "POST";
         const payload = { pubkey: hexPubkey };
-        const token = getNostrAuthToken({
+        const token = await getNostrAuthToken({
           url,
           method,
           payload,
