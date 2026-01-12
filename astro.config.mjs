@@ -14,9 +14,4 @@ export default defineConfig({
   },
 
   integrations: [react(), mdx()],
-
-  // 重定向配置
-  redirects: {
-    '/.well-known/nostr.json': 'https://api.nostrzh.org/.well-known/nostr.json',
-  },
 });
