@@ -1,0 +1,120 @@
+---
+/**
+ * Button 组件 - 统一的按钮样式
+ *
+ * @param variant - 按钮变体: primary | secondary | outline | ghost
+ * @param size - 按钮大小: sm | md | lg
+ * @param href - 链接地址 (可选，如果提供则渲染为 <a>)
+ * @param type - 按钮类型 (button/submit)
+ * @param className - 额外的类名
+ * @param rest - 其他 HTML 属性
+ */
+interface Props {
+  variant?: "primary" | "secondary" | "outline" | "ghost";
+  size?: "sm" | "md" | "lg";
+  href?: string;
+  type?: "button" | "submit";
+  className?: string;
+  [key: string]: any;
+}
+
+const {
+  variant = "primary",
+  size = "md",
+  href,
+  type = "button",
+  className = "",
+  ...rest
+} = Astro.props;
+
+// 基础样式
+const baseClasses = [
+  "inline-flex",
+  "items-center",
+  "justify-center",
+  "font-medium",
+  "rounded-lg",
+  "transition-all",
+  "duration-250",
+  "ease-out",
+  "focus:outline-none",
+  "focus:ring-2",
+  "focus:ring-primary-500",
+  "focus:ring-offset-2",
+  "disabled:opacity-50",
+  "disabled:cursor-not-allowed",
+];
+
+// 变体样式
+const variantClasses: Record<string, string[]> = {
+  primary: [
+    "bg-primary-600",
+    "text-white",
+    "hover:bg-primary-700",
+    "active:bg-primary-800",
+    "shadow-lg",
+    "shadow-primary-600/25",
+    "hover:shadow-xl",
+    "hover:shadow-primary-600/30",
+  ],
+  secondary: [
+    "bg-bg-secondary",
+    "text-text-primary",
+    "border",
+    "border-border",
+    "hover:bg-bg-tertiary",
+    "hover:border-border-hover",
+  ],
+  outline: [
+    "bg-transparent",
+    "border-2",
+    "border-primary-600",
+    "text-primary-600",
+    "hover:bg-primary-50",
+    "active:bg-primary-100",
+  ],
+  ghost: [
+    "bg-transparent",
+    "text-text-secondary",
+    "hover:bg-bg-secondary",
+    "hover:text-text-primary",
+  ],
+};
+
+// 尺寸样式
+const sizeClasses: Record<string, string> = {
+  sm: "px-4 py-2 text-sm",
+  md: "px-6 py-2.5 text-base",
+  lg: "px-8 py-3 text-lg",
+};
+
+const classes = [...baseClasses, ...variantClasses[variant], sizeClasses[size], className]
+  .filter(Boolean)
+  .join(" ");
+
+const Tag = href ? "a" : "button";
+---
+
+<Tag
+  class={classes}
+  href={href}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  /* 深色模式下的 outline 变体调整 */
+  @media (prefers-color-scheme: dark) {
+    a.outline,
+    button.outline {
+      border-color: var(--color-primary-400);
+      color: var(--color-primary-400);
+    }
+    a.outline:hover,
+    button.outline:hover {
+      background-color: rgba(192, 132, 252, 0.1);
+    }
+  }
+</style>

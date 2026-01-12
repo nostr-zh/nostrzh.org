@@ -1,0 +1,122 @@
+---
+/**
+ * MobileNav 组件 - 移动端导航菜单
+ */
+interface Props {
+  isHome: boolean;
+}
+
+const { isHome } = Astro.props;
+
+const linkClasses = [
+  "mobile-link",
+  "text-text-secondary",
+  "hover:text-primary-600",
+  "dark:hover:text-primary-400",
+  "transition-colors",
+  "duration-200",
+  "py-2",
+  "px-2",
+  "rounded",
+  "hover:bg-bg-secondary",
+].join(" ");
+
+const homeLinks = [
+  { href: "#about", text: "关于" },
+  { href: "#relay", text: "社区 Relay" },
+  { href: "#resources", text: "资源" },
+];
+---
+
+<!-- 移动菜单 -->
+<nav
+  id="mobile-menu"
+  class="md:hidden bg-bg-primary border-border overflow-hidden transition-all duration-300 ease-in-out max-h-0"
+>
+  <div class="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-4">
+    {
+      isHome
+        ? homeLinks.map((link) => (
+            <a href={link.href} class={linkClasses}>
+              {link.text}
+            </a>
+          ))
+        : <a href="/" class={linkClasses}>首页</a>
+    }
+    <a href="/nip05" class={linkClasses}>NIP-05</a>
+    <a href="/blog" class={linkClasses}>博客</a>
+  </div>
+</nav>
+
+<style>
+  /* 移动菜单打开时添加顶部边框 */
+  #mobile-menu.border-t {
+    border-top-width: 1px;
+  }
+</style>
+
+<script>
+  // 移动菜单状态管理
+  let isOpen = false;
+
+  const mobileMenuButton = document.getElementById("mobile-menu-button");
+  const mobileMenu = document.getElementById("mobile-menu");
+  const menuOpenIcon = document.getElementById("menu-open-icon");
+  const menuCloseIcon = document.getElementById("menu-close-icon");
+
+  // 切换菜单
+  function toggleMenu() {
+    isOpen = !isOpen;
+
+    if (isOpen) {
+      // 打开菜单
+      mobileMenu?.style.setProperty("max-height", "500px");
+      mobileMenu?.classList.add("border-t");
+      menuOpenIcon?.classList.add("hidden");
+      menuCloseIcon?.classList.remove("hidden");
+
+      // 动画菜单项
+      const links = mobileMenu?.querySelectorAll(".mobile-link");
+      links?.forEach((link, index) => {
+        setTimeout(() => {
+          link.classList.add("animate-fade-in-up");
+        }, index * 50);
+      });
+    } else {
+      // 关闭菜单
+      mobileMenu?.style.setProperty("max-height", "0");
+      mobileMenu?.classList.remove("border-t");
+      menuOpenIcon?.classList.remove("hidden");
+      menuCloseIcon?.classList.add("hidden");
+
+      // 重置动画
+      const links = mobileMenu?.querySelectorAll(".mobile-link");
+      links?.forEach((link) => {
+        link.classList.remove("animate-fade-in-up");
+      });
+    }
+  }
+
+  // 关闭菜单
+  function closeMenu() {
+    isOpen = false;
+    mobileMenu?.style.setProperty("max-height", "0");
+    mobileMenu?.classList.remove("border-t");
+    menuOpenIcon?.classList.remove("hidden");
+    menuCloseIcon?.classList.add("hidden");
+
+    const links = mobileMenu?.querySelectorAll(".mobile-link");
+    links?.forEach((link) => {
+      link.classList.remove("animate-fade-in-up");
+    });
+  }
+
+  // 绑定按钮点击事件
+  mobileMenuButton?.addEventListener("click", toggleMenu);
+
+  // 点击链接时关闭菜单
+  const mobileLinks = mobileMenu?.querySelectorAll("a");
+  mobileLinks?.forEach((link) => {
+    link.addEventListener("click", closeMenu);
+  });
+</script>

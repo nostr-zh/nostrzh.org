@@ -1,0 +1,38 @@
+---
+/**
+ * DesktopNav 组件 - 桌面导航
+ */
+interface Props {
+  isHome: boolean;
+}
+
+const { isHome } = Astro.props;
+
+const linkClasses = [
+  "text-text-secondary",
+  "hover:text-primary-600",
+  "dark:hover:text-primary-400",
+  "transition-colors",
+  "duration-200",
+].join(" ");
+
+const homeLinks = [
+  { href: "#about", text: "关于" },
+  { href: "#relay", text: "社区 Relay" },
+  { href: "#resources", text: "资源" },
+];
+---
+
+<nav class="hidden md:flex items-center gap-6">
+  {
+    isHome
+      ? homeLinks.map((link) => (
+          <a href={link.href} class={linkClasses}>
+            {link.text}
+          </a>
+        ))
+      : <a href="/" class={linkClasses}>首页</a>
+  }
+  <a href="/nip05" class={linkClasses}>NIP-05</a>
+  <a href="/blog" class={linkClasses}>博客</a>
+</nav>

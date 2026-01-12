@@ -1,6 +1,5 @@
 ---
 import "../styles/global.css";
-
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
 ---
@@ -25,9 +24,7 @@ import Header from "../components/Header.astro";
     <title>NostrZH 中文社区</title>
   </head>
   <body>
-    <div
-      class="min-h-screen bg-white dark:bg-slate-900 text-slate-900 dark:text-slate-100"
-    >
+    <div class="min-h-screen bg-bg-primary text-text-primary">
       <Header />
       <main>
         <slot />
@@ -45,11 +42,6 @@ import Header from "../components/Header.astro";
     height: 100%;
   }
   html {
-    background-color: #ffffff;
-  }
-  @media (prefers-color-scheme: dark) {
-    html {
-      background-color: #0f172a;
-    }
+    background-color: var(--color-bg-primary);
   }
 </style>

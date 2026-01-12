@@ -1,0 +1,65 @@
+---
+/**
+ * ArticleMeta 组件 - 文章元数据
+ */
+import Badge from "../ui/Badge.astro";
+
+interface Author {
+  name: string;
+  pubkey?: string;
+}
+
+interface Props {
+  authors: (string | Author)[];
+  date: string;
+  tags?: string[];
+}
+
+const { authors, date, tags = [] } = Astro.props;
+---
+
+<div class="flex flex-wrap items-center gap-2 text-sm text-text-tertiary mb-4">
+  {
+    authors.map((author, index) => {
+      const { name, pubkey } = typeof author === "string" ? { name: author } : author;
+      return (
+        <span>
+          {pubkey ? (
+            <a
+              href={`https://njump.me/${pubkey}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hover:text-text-secondary hover:underline transition-colors"
+            >
+              {name}
+            </a>
+          ) : (
+            <span>{name}</span>
+          )}
+        </span>
+      );
+    })
+  }
+  <span>•</span>
+  <time datetime={date}>
+    {
+      new Date(date).toLocaleDateString("zh-CN", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      })
+    }
+  </time>
+</div>
+
+{
+  tags && tags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mt-4">
+      {tags.map((tag: string) => (
+        <Badge variant="primary" size="sm">
+          {tag}
+        </Badge>
+      ))}
+    </div>
+  )
+}

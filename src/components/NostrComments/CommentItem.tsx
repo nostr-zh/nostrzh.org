@@ -1,8 +1,8 @@
 import type { NostrEvent } from "nostr-tools";
 import { formatDate } from "../../lib/date";
 import type { TComment } from "../../types";
-import Avatar from "./Avatar";
-import Username from "./Username";
+import Avatar from "../Avatar";
+import Username from "../Username";
 
 export default function CommentItem({
   comment,

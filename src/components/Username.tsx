@@ -1,6 +1,6 @@
 import { bareNostrUser, loadNostrUser } from "@nostr/gadgets/metadata";
 import { useEffect, useState } from "react";
-import { getNostrProfileUrl } from "../../lib/nostr";
+import { getNostrProfileUrl } from "../lib/nostr";
 
 export default function Username({ pubkey }: { pubkey: string }) {
   const [username, setUsername] = useState<string>(

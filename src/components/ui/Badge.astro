@@ -1,0 +1,94 @@
+---
+/**
+ * Badge 组件 - 小标签/徽章
+ *
+ * @param variant - 变体: default | primary | secondary | success | warning | danger
+ * @param size - 大小: sm | md | lg
+ * @param dot - 是否显示圆点
+ */
+interface Props {
+  variant?: "default" | "primary" | "secondary" | "success" | "warning" | "danger";
+  size?: "sm" | "md" | "lg";
+  dot?: boolean;
+  className?: string;
+}
+
+const {
+  variant = "default",
+  size = "md",
+  dot = false,
+  className = "",
+} = Astro.props;
+
+// 基础样式
+const baseClasses = [
+  "inline-flex",
+  "items-center",
+  "gap-1.5",
+  "font-medium",
+  "rounded-full",
+  "transition-colors",
+  "duration-200",
+];
+
+// 变体样式
+const variantClasses: Record<string, string[]> = {
+  default: [
+    "bg-bg-secondary",
+    "text-text-secondary",
+    "border",
+    "border-border",
+  ],
+  primary: [
+    "bg-primary-100",
+    "text-primary-700",
+    "dark:bg-primary-900/50",
+    "dark:text-primary-300",
+  ],
+  secondary: [
+    "bg-secondary-100",
+    "text-secondary-700",
+    "dark:bg-secondary-900/50",
+    "dark:text-secondary-300",
+  ],
+  success: [
+    "bg-emerald-100",
+    "text-emerald-700",
+    "dark:bg-emerald-900/50",
+    "dark:text-emerald-300",
+  ],
+  warning: [
+    "bg-amber-100",
+    "text-amber-700",
+    "dark:bg-amber-900/50",
+    "dark:text-amber-300",
+  ],
+  danger: [
+    "bg-red-100",
+    "text-red-700",
+    "dark:bg-red-900/50",
+    "dark:text-red-300",
+  ],
+};
+
+// 尺寸样式
+const sizeClasses: Record<string, string[]> = {
+  sm: ["px-2", "py-0.5", "text-xs"],
+  md: ["px-3", "py-1", "text-sm"],
+  lg: ["px-4", "py-1.5", "text-base"],
+};
+
+const dotClass = "w-1.5 h-1.5 rounded-full bg-current";
+
+const classes = [
+  ...baseClasses,
+  ...variantClasses[variant],
+  ...sizeClasses[size],
+  className,
+].join(" ");
+---
+
+<span class={classes}>
+  {dot && <span class={dotClass}></span>}
+  <slot />
+</span>

@@ -1,4 +1,4 @@
-import type { EventTemplate, NostrEvent } from "nostr-tools";
+import type { NostrEvent } from "nostr-tools";
 import { useState } from "react";
 import CommentEditor from "./CommentEditor";
 import CommentList from "./CommentList";

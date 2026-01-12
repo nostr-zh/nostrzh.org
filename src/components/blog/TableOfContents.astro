@@ -1,0 +1,171 @@
+---
+/**
+ * TableOfContents 组件 - 文章目录
+ * 客户端动态生成目录内容
+ */
+---
+
+<nav id="toc" class="hidden">
+  <ul
+    id="toc-list"
+    class="space-y-2 text-sm border-l border-border"
+  >
+    <!-- 目录项将由客户端动态生成 -->
+  </ul>
+</nav>
+
+<script define:vars={{}}>
+  // TOC 状态管理
+  let isClickLocked = false;
+
+  // 高亮当前章节
+  function setActiveLink(id) {
+    const tocList = document.getElementById("toc-list");
+    if (!tocList) return;
+
+    tocList.querySelectorAll("a").forEach(function(a) {
+      a.classList.remove(
+        "text-primary-600",
+        "dark:text-primary-400",
+        "border-primary-500",
+        "font-medium"
+      );
+      a.classList.add(
+        "text-text-muted",
+        "border-transparent",
+        "hover:text-text-primary",
+        "hover:border-border-hover"
+      );
+    });
+
+    var selector = 'a[data-toc-id="' + id + '"]';
+    const activeLink = tocList.querySelector(selector);
+    if (activeLink) {
+      activeLink.classList.remove(
+        "text-text-muted",
+        "border-transparent",
+        "hover:text-text-primary",
+        "hover:border-border-hover"
+      );
+      activeLink.classList.add(
+        "text-primary-600",
+        "dark:text-primary-400",
+        "border-primary-500",
+        "font-medium"
+      );
+    }
+  }
+
+  // 初始化 TOC 交互
+  function initTOC() {
+    const article = document.querySelector(".prose");
+    const tocList = document.getElementById("toc-list");
+    const toc = document.getElementById("toc");
+
+    if (!article || !tocList) return;
+
+    const headings = article.querySelectorAll("h2, h3");
+
+    // 如果没有标题，隐藏目录
+    if (headings.length === 0) {
+      if (toc) toc.classList.add("hidden");
+      return;
+    }
+
+    // 显示目录
+    if (toc) toc.classList.remove("hidden");
+
+    // 清空现有内容
+    tocList.innerHTML = "";
+
+    // 生成目录项
+    headings.forEach(function(heading, index) {
+      // 为标题添加 id
+      if (!heading.id) {
+        heading.id = "heading-" + index;
+      }
+
+      const li = document.createElement("li");
+      li.className = "-ml-px";
+
+      const a = document.createElement("a");
+      a.href = "#" + heading.id;
+      a.textContent = heading.textContent || "";
+      a.setAttribute("data-toc-id", heading.id);
+      var baseClasses = [
+        "block py-1 pl-4 border-l-2 border-transparent",
+        "text-text-muted",
+        "hover:text-text-primary",
+        "hover:border-border-hover",
+        "transition-colors",
+        "duration-200"
+      ];
+      if (heading.tagName === "H3") {
+        baseClasses.push("pl-6 text-[13px]");
+      }
+      a.className = baseClasses.join(" ");
+
+      // 添加点击事件
+      a.addEventListener("click", function() {
+        isClickLocked = true;
+        setActiveLink(heading.id);
+        setTimeout(function() {
+          isClickLocked = false;
+        }, 1000);
+      });
+
+      li.appendChild(a);
+      tocList.appendChild(li);
+    });
+
+    // 监听滚动事件
+    window.addEventListener("scroll", updateActiveHeading, { passive: true });
+    updateActiveHeading();
+  }
+
+  // 更新当前激活的章节
+  function updateActiveHeading() {
+    if (isClickLocked) return;
+
+    const tocList = document.getElementById("toc-list");
+    if (!tocList) return;
+
+    const links = Array.from(tocList.querySelectorAll("a"));
+    const headings = links
+      .map(function(link) {
+        const id = link.getAttribute("data-toc-id");
+        const heading = id ? document.getElementById(id) : null;
+        return { link: link, heading: heading };
+      })
+      .filter(function(item) {
+        return item.heading !== null;
+      });
+
+    let currentHeading = null;
+
+    for (var i = 0; i < headings.length; i++) {
+      var item = headings[i];
+      if (!item.heading) continue;
+      var rect = item.heading.getBoundingClientRect();
+      if (rect.top <= 100) {
+        currentHeading = item;
+      }
+    }
+
+    if (currentHeading) {
+      const id = currentHeading.link.getAttribute("data-toc-id");
+      if (id) setActiveLink(id);
+    }
+  }
+
+  // 页面加载时初始化
+  document.addEventListener("DOMContentLoaded", initTOC);
+  document.addEventListener("astro:page-load", initTOC);
+</script>
+
+<style>
+  /* 确保滚动偏移正确 */
+  [id] {
+    scroll-margin-top: 80px;
+  }
+</style>

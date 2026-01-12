@@ -1,5 +1,9 @@
 ---
+/**
+ * Resources 组件 - 资源链接
+ */
 import { Star, FileText, BookOpen, Smartphone } from "@lucide/astro";
+import Card from "../ui/Card.astro";
 
 const resources = [
   {
@@ -31,49 +35,57 @@ const resources = [
 ---
 
 <section id="resources" class="py-24 relative overflow-hidden">
-  <div class="absolute inset-0 bg-white dark:bg-slate-900"></div>
+  <div class="absolute inset-0 bg-bg-primary"></div>
   <div
-    class="absolute bottom-0 right-0 w-125 h-125 bg-purple-100/40 dark:bg-purple-900/10 rounded-full blur-3xl translate-y-1/2 translate-x-1/4"
+    class="absolute bottom-0 right-0 w-125 h-125 bg-gradient-glow-purple opacity-30 rounded-full blur-3xl translate-y-1/2 translate-x-1/4"
   >
   </div>
 
   <div class="max-w-6xl mx-auto px-6 relative">
     <div class="text-center mb-16">
-      <h2
-        class="text-3xl md:text-4xl font-bold text-slate-800 dark:text-white mb-4"
-      >
+      <h2 class="text-3xl md:text-4xl font-bold text-text-primary mb-4">
         资源与链接
       </h2>
-      <p class="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto">
+      <p class="text-lg text-text-secondary max-w-2xl mx-auto">
         探索更多 Nostr 相关资源
       </p>
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
       {
-        resources.map((resource, index) => (
+        resources.map((resource) => (
           <a
             href={resource.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="group p-6 rounded-2xl bg-white/60 dark:bg-slate-800/60 backdrop-blur-sm border border-slate-200/50 dark:border-slate-700/50 hover:border-purple-400 dark:hover:border-purple-500 transition-all hover:shadow-lg"
+            class="group"
           >
-            <div class="flex items-start gap-4">
-              <div class="w-10 h-10 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center shrink-0">
-                <resource.icon class="text-slate-400" size={18} />
+            <Card
+              variant="default"
+              padding="lg"
+              hoverable={true}
+              className="h-full!"
+            >
+              <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-bg-tertiary flex items-center justify-center shrink-0 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
+                  <resource.icon
+                    class="text-text-tertiary group-hover:text-primary-500 dark:group-hover:text-primary-400 transition-colors"
+                    size={20}
+                  />
+                </div>
+                <div class="flex-1">
+                  <h3 class="text-lg font-semibold text-text-primary group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors mb-2">
+                    {resource.title}
+                  </h3>
+                  <p class="text-text-secondary text-sm leading-relaxed">
+                    {resource.description}
+                  </p>
+                </div>
+                <span class="text-text-tertiary group-hover:text-primary-500 group-hover:translate-x-1 transition-all">
+                  →
+                </span>
               </div>
-              <div class="flex-1">
-                <h3 class="text-lg font-semibold text-slate-800 dark:text-white group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors mb-2">
-                  {resource.title}
-                  <span class="inline-block ml-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    →
-                  </span>
-                </h3>
-                <p class="text-slate-600 dark:text-slate-400 text-sm">
-                  {resource.description}
-                </p>
-              </div>
-            </div>
+            </Card>
           </a>
         ))
       }

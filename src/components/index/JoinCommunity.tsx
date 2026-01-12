@@ -382,14 +382,23 @@ export default function JoinCommunity() {
               你已经是 Nostr 中文社区的一员了！
             </p>
           </div>
-          <button
-            onClick={handleComplete}
-            className="px-6 py-2 w-full flex flex-col items-center bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
-          >
-            <div className="flex items-center gap-2">
-              开始使用 <ExternalLink className="size-4" />
-            </div>
-          </button>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button
+              onClick={handleComplete}
+              className="px-6 py-2 w-full flex flex-col items-center bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                开始使用 <ExternalLink className="size-4" />
+              </div>
+            </button>
+
+            <a
+              href="/nip05"
+              className="px-4 py-2 w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors cursor-pointer"
+            >
+              注册 NIP-05
+            </a>
+          </div>
         </div>
       </Modal>
 
@@ -562,17 +571,26 @@ export default function JoinCommunity() {
               欢迎加入 Nostr 中文社区！
             </p>
             <p className="text-sm text-purple-600 dark:text-purple-400 mt-2">
-              现在你可以连接我们的 Relay 开始社交了
+              现在你可以向 NostrZH 社区 Relay 发帖了
             </p>
           </div>
-          <button
-            onClick={handleComplete}
-            className="px-6 py-2 w-full flex flex-col items-center bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
-          >
-            <div className="flex items-center gap-2">
-              开始使用 <ExternalLink className="size-4" />
-            </div>
-          </button>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <button
+              onClick={handleComplete}
+              className="px-6 py-2 w-full flex flex-col items-center bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors cursor-pointer"
+            >
+              <div className="flex items-center gap-2">
+                开始使用 <ExternalLink className="size-4" />
+              </div>
+            </button>
+            <a
+              href="/nip05"
+              className="px-4 py-2 w-full bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 rounded-lg transition-colors cursor-pointer"
+            >
+              注册 NIP-05
+            </a>
+          </div>
         </div>
       </Modal>
     </>

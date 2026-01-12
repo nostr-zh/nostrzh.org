@@ -5,7 +5,7 @@ import dayjs from "dayjs";
 import type { NostrEvent } from "nostr-tools";
 import { useCallback, useState } from "react";
 import { DEFAULT_RELAY_URLS } from "../../constants";
-import Avatar from "./Avatar";
+import Avatar from "../Avatar";
 
 export default function CommentEditor({
   url,

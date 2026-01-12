@@ -10,6 +10,8 @@ import { hexToBytes } from "nostr-tools/utils";
 import { useEffect, useState } from "react";
 import { BACKEND_SERVER_URL } from "../constants";
 import { getNostrAuthToken } from "../lib/nostr";
+import Avatar from "./Avatar";
+import Username from "./Username";
 
 export default function Nip05Register() {
   const [pubkey, setPubkey] = useState<string>("");
@@ -231,7 +233,7 @@ export default function Nip05Register() {
             <button
               onClick={handleExtensionLogin}
               disabled={loading}
-              className="w-full px-6 py-4 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              className="cursor-pointer w-full px-6 py-4 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3"
             >
               <svg
                 className="w-5 h-5"
@@ -270,7 +272,7 @@ export default function Nip05Register() {
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 远程签名器（Bunker）
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="text"
                   value={nip46Token}
@@ -282,7 +284,7 @@ export default function Nip05Register() {
                 <button
                   onClick={handleNip46Login}
                   disabled={loading || !nip46Token.trim()}
-                  className="px-6 py-3 bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="cursor-pointer shrink-0 px-6 py-3 bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   连接
                 </button>
@@ -307,7 +309,7 @@ export default function Nip05Register() {
               <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
                 使用私钥登录
               </label>
-              <div className="flex gap-2">
+              <div className="flex flex-col sm:flex-row gap-2">
                 <input
                   type="password"
                   value={privateKey}
@@ -319,7 +321,7 @@ export default function Nip05Register() {
                 <button
                   onClick={handlePrivateKeyLogin}
                   disabled={loading || !privateKey.trim()}
-                  className="px-6 py-3 bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="cursor-pointer shrink-0 px-6 py-3 bg-slate-700 hover:bg-slate-800 dark:bg-slate-600 dark:hover:bg-slate-700 text-white font-medium rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   登录
                 </button>
@@ -342,16 +344,17 @@ export default function Nip05Register() {
           <div className="mb-6 p-4 rounded-lg bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-700">
             <div className="flex items-start justify-between">
               <div className="flex-1">
-                <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
+                <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
                   已登录
                 </p>
-                <p className="text-xs font-mono text-slate-900 dark:text-slate-100 break-all">
-                  {pubkey}
-                </p>
+                <div className="flex items-center gap-2">
+                  <Avatar pubkey={pubkey} />
+                  <Username pubkey={pubkey} />
+                </div>
               </div>
               <button
                 onClick={handleLogout}
-                className="ml-4 px-3 py-1 text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
+                className="cursor-pointer text-sm text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100 transition-colors"
               >
                 退出
               </button>
@@ -417,7 +420,7 @@ export default function Nip05Register() {
             <button
               type="submit"
               disabled={loading || !name.trim()}
-              className="w-full px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
+              className="cursor-pointer w-full px-6 py-3 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 dark:from-purple-500 dark:to-pink-500 dark:hover:from-purple-600 dark:hover:to-pink-600 text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg"
             >
               {loading ? (
                 <span className="flex items-center justify-center gap-2">

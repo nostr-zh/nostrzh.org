@@ -15,10 +15,13 @@ export function useWhitelistUsers(limit?: number) {
         setLoading(false);
       })
       .catch((err) => {
+        console.error("Failed to fetch whitelist users:", err);
         setError(err.message);
         setLoading(false);
+        // 使用默认用户列表作为 fallback
+        setUsers([]);
       });
-  }, [limit]);
+  }, []); // 移除 limit 依赖，避免无限循环
 
   return { users, loading, error };
 }
