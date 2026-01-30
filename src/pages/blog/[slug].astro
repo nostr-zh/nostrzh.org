@@ -1,4 +1,5 @@
 ---
+import Comments from "../../components/Comments";
 import { NostrComments } from "../../components/NostrComments";
 import ArticleMeta from "../../components/blog/ArticleMeta.astro";
 import TableOfContents from "../../components/blog/TableOfContents.astro";
@@ -66,11 +67,11 @@ const { frontmatter, Content } = post;
           <div class="h-6 w-full"></div>
 
           {/* Nostr 评论区 */}
-          <NostrComments
+          <Comments
             articleSlug={slug}
             articleAuthorPubkeys={frontmatter.authors
               .map((author) =>
-                typeof author === "string" ? undefined : author.pubkey
+                typeof author === "string" ? undefined : author.pubkey,
               )
               .filter(Boolean) as string[]}
             client:visible
