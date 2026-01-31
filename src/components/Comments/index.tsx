@@ -12,6 +12,6 @@ export default function Comments({
   const url = `https://nostrzh.org/blog/${articleSlug}`;
 
   return (
-    <NostrComments url={url} locale="zh" authorPubkeys={articleAuthorPubkeys} />
+    <NostrComments url={url} locale="zh" mention={articleAuthorPubkeys?.[0]} />
   );
 }
